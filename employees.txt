@@ -1,3 +1,0 @@
-E103,Omar,omar@gmail.com,Giza,0105555666
-E101,Sara,sara@gmail.com,Cairo,0101234567
-E105,Hodar,hoda@gmail.com,Cairo,0119998888
