@@ -1,7 +1,11 @@
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.File;
 import java.io.IOException;
+
 
 public class EmployeeUser {
     protected String employeeId;
@@ -33,7 +37,7 @@ public class EmployeeUser {
     }
 
     private boolean isValidEmail(String email) {
-        return email != null && email.contains("@mail.com");
+        return email != null && email.contains("@gmail.com");
     }
 
     private boolean isValidPhone(String phone) {
@@ -53,23 +57,40 @@ public class EmployeeUser {
     }
 
     public void storeInFile(String filename) {
-        if (!isValidEmployee()) {
+        // Validate data first
+        if (!isValidEmployee() || !isValidPhone(phoneNumber) || !isValidEmail(email)) {
             System.out.println("⚠️ Employee " + employeeId + " not stored: invalid data.");
             return;
         }
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
+        // Check if employee ID already exists in file
+        File file = new File(filename);
+        if (file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // Assuming getRepresentation() stores something like: "1234,John Doe,1234567890,john@example.com"
+                    if (line.startsWith(employeeId + ",")) {
+                        System.out.println("⚠️ Employee " + employeeId + " already exists. Not stored again.");
+                        return;
+                    }
+                }
+            } catch (IOException e) {
+                System.out.println("❌ Error reading file: " + e.getMessage());
+                return;
+            }
+        }
+
+        // If ID not found, write to file
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
             writer.write(getRepresentation());
             writer.newLine();
             System.out.println("✅ Employee " + name + " stored successfully.");
         } catch (IOException e) {
-            System.out.println("Error storing employee: " + e.getMessage());
+            System.out.println("❌ Error storing employee: " + e.getMessage());
         }
     }
 }
-
-
-
 
 
 
