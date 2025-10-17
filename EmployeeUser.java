@@ -1,92 +1,40 @@
-import java.io.BufferedReader;
-import java.io.*;
-
-
-public class EmployeeUser {
-    protected String employeeId;
-    protected String name;
-    protected String email;
-    protected String address;
-    protected String phoneNumber;
+public class EmployeeUser implements Record {
+    private String employeeId;
+    private String name;
+    private String email;
+    private String address;
+    private String phoneNumber;
 
     public EmployeeUser(String employeeId, String name, String email, String address, String phoneNumber) {
-        this.employeeId = employeeId;
-        this.name = name;
-        this.email = email;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
+        if (employeeId == null || employeeId.trim().isEmpty())
+            throw new IllegalArgumentException("Employee ID cannot be empty.");
+        if (!isValidEmail(email))
+            throw new IllegalArgumentException("Email must end with '@gmail.com'.");
+        if (!isValidPhone(phoneNumber))
+            throw new IllegalArgumentException("Phone number must contain only digits and be 10–15 digits.");
 
-        if (!isValidName(name)) {
-            System.out.println("❌ Invalid name for employee " + employeeId + "!");
-        }
-        if (!isValidEmail(email)) {
-            System.out.println("❌ Invalid email for employee " + employeeId + "!");
-        }
-        if (!isValidPhone(phoneNumber)) {
-            System.out.println("❌ Invalid phone number for employee " + employeeId + "!");
-        }
-    }
-
-    private boolean isValidName(String name) {
-        return name != null && !name.trim().isEmpty();
+        this.employeeId = employeeId.trim();
+        this.name = (name != null) ? name.trim() : "";
+        this.email = email.trim();
+        this.address = (address != null) ? address.trim() : "";
+        this.phoneNumber = phoneNumber.trim();
     }
 
     private boolean isValidEmail(String email) {
-        return email != null && email.contains("@gmail.com");
+        return email != null && email.toLowerCase().endsWith("@gmail.com");
     }
 
     private boolean isValidPhone(String phone) {
-        return phone != null && phone.matches("\\d+");
+        return phone != null && phone.matches("\\d{10,15}");
     }
 
-    public boolean isValidEmployee() {
-        return isValidName(name) && isValidEmail(email) && isValidPhone(phoneNumber);
+    @Override
+    public String lineRepresentation() {
+        return employeeId + "," + name + "," + email + "," + address + "," + phoneNumber;
     }
 
-    public String getRepresentation() {
-        return String.join(",", employeeId, name, email, address, phoneNumber);
-    }
-
+    @Override
     public String getSearchKey() {
         return employeeId;
     }
-
-    public void storeInFile(String filename) {
-        // Validate data first
-        if (!isValidEmployee() || !isValidPhone(phoneNumber) || !isValidEmail(email)) {
-            System.out.println("⚠️ Employee " + employeeId + " not stored: invalid data.");
-            return;
-        }
-
-        // Check if employee ID already exists in file
-        File file = new File(filename);
-        if (file.exists()) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    // Assuming getRepresentation() stores something like: "1234,John Doe,1234567890,john@example.com"
-                    if (line.startsWith(employeeId + ",")) {
-                        System.out.println("⚠️ Employee " + employeeId + " already exists. Not stored again.");
-                        return;
-                    }
-                }
-            } catch (IOException e) {
-                System.out.println("❌ Error reading file: " + e.getMessage());
-                return;
-            }
-        }
-
-        // If ID not found, write to file
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
-            writer.write(getRepresentation());
-            writer.newLine();
-            System.out.println("✅ Employee " + name + " stored successfully.");
-        } catch (IOException e) {
-            System.out.println("❌ Error storing employee: " + e.getMessage());
-        }
-    }
 }
-
-
-
-
