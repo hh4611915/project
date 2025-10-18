@@ -20,8 +20,16 @@ public class Main {
             System.out.println("Error adding employee: " + e.getMessage());
         }
 
-
+        AdminRole ad = new AdminRole();
+        ad.addEmployee("E350", "Khaled", "khaled@gmail.com", "PortSaid", "0100045600");
+        db.readFromFile();
         System.out.println("All Employees:");
+        for (EmployeeUser emp : db.returnAllRecords()) {
+            System.out.println(emp.lineRepresentation());
+        }
+        System.out.println("====================================================================");
+        ad.removeEmployee("E350");
+        db.readFromFile();
         for (EmployeeUser emp : db.returnAllRecords()) {
             System.out.println(emp.lineRepresentation());
         }
