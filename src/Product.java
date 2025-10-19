@@ -4,12 +4,20 @@ public class Product implements Record {
     private float price;
 
     public Product(String productID, String productName, String manufacturerName, String supplierName, int quantity, float price) {
-        if (productID == null || productID.trim().isEmpty())
-            throw new IllegalArgumentException("Product ID cannot be empty.");
+        if (productID == null || productID.trim().isEmpty()){
+            System.out.println("Invalid ID");
+            return;
+        }
         if (quantity<0)
-            throw new IllegalArgumentException("Quantity cannot be less than zero");
+        {
+            System.out.println("Invalid quantity");
+            return;
+        }
         if (price<0)
-            throw new IllegalArgumentException("Price cannot be less than zero");
+        {
+            System.out.println("Invalid price");
+            return;
+        }
         this.productID = productID;
         this.productName = productName;
         this.manufacturerName = manufacturerName;
