@@ -18,13 +18,12 @@ public class CustomerProductDatabase {
     private ArrayList<CustomerProduct> records;
     private String filename;
 
-    // Constructor
+    
     public CustomerProductDatabase(String filename) {
         this.filename = filename;
         this.records = new ArrayList<>();
     }
 
-    // 1. Read all records from file
     public void readFromFile() throws IOException {
         records.clear();
         BufferedReader br = new BufferedReader(new FileReader(filename));
@@ -40,7 +39,6 @@ public class CustomerProductDatabase {
         br.close();
     }
 
-    // 2. Create a CustomerProduct object from a line of text
     public CustomerProduct createRecordFrom(String line) {
         String[] parts = line.split(",");
         if (parts.length != 4) {
@@ -61,59 +59,62 @@ public class CustomerProductDatabase {
         return cp;
     }
 
-    // 3. Return all records
     public ArrayList<CustomerProduct> returnAllRecords() {
         return records;
     }
 
-    // 4. Check if record exists
     public boolean contains(String key) {
-        for (CustomerProduct cp : records) {
-            if (cp.getSearchKey().equals(key)) {
-                return true;
-            }
+    for (int i = 0; i < records.size(); i++) {
+        CustomerProduct cp = records.get(i);
+        if (cp.getSearchKey().equals(key)) {
+            return true;
         }
-        return false;
     }
+    return false;
+}
 
-    // 5. Get a specific record
-    public CustomerProduct getRecord(String key) {
-        for (CustomerProduct cp : records) {
-            if (cp.getSearchKey().equals(key)) {
-                return cp;
-            }
+
+   public CustomerProduct getRecord(String key) {
+    for (int i = 0; i < records.size(); i++) {
+        CustomerProduct cp = records.get(i);
+        if (cp.getSearchKey().equals(key)) {
+            return cp;
         }
-        return null;
     }
+    return null;
+}
 
-    // 6. Insert a new record
+
     public void insertRecord(CustomerProduct record) {
         if (!contains(record.getSearchKey())) {
             records.add(record);
         }
     }
 
-    // 7. Delete a record
-    public void deleteRecord(String key) {
-        CustomerProduct toDelete = null;
-        for (CustomerProduct cp : records) {
-            if (cp.getSearchKey().equals(key)) {
-                toDelete = cp;
-                break;
-            }
-        }
-        if (toDelete != null) {
-            records.remove(toDelete);
+   public void deleteRecord(String key) {
+    CustomerProduct toDelete = null;
+    for (int i = 0; i < records.size(); i++) {
+        CustomerProduct cp = records.get(i);
+        if (cp.getSearchKey().equals(key)) {
+            toDelete = cp;
+            break;
         }
     }
-
-    // 8. Save all records to file
-    public void saveToFile() throws IOException {
-        BufferedWriter bw = new BufferedWriter(new FileWriter(filename));
-        for (CustomerProduct cp : records) {
-            bw.write(cp.lineRepresentation());
-            bw.newLine();
-        }
-        bw.close();
+    if (toDelete != null) {
+        records.remove(toDelete);
     }
 }
+
+
+    public void saveToFile() throws IOException {
+    BufferedWriter bw = new BufferedWriter(new FileWriter(filename));
+    for (int i = 0; i < records.size(); i++) {
+        CustomerProduct cp = records.get(i);
+        bw.write(cp.lineRepresentation());
+        bw.newLine();
+    }
+    bw.close();
+}
+
+}
+
