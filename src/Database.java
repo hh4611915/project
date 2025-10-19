@@ -52,6 +52,16 @@ public abstract class Database<Type extends Record> {
         }
         records.add(record);
     }
+    public void deleteRecord(String key) {
+        for (int i = 0; i < records.size(); i++) {
+            if (records.get(i).getSearchKey().equals(key)) {
+                records.remove(i);
+                System.out.println("Record with ID " + key + " deleted successfully.");
+                return;
+            }
+        }
+        System.out.println("Record with ID " + key + " not found.");
+    }
 
     // 6. Save all records to file
     public void saveToFile() {
@@ -64,5 +74,6 @@ public abstract class Database<Type extends Record> {
             System.out.println("Error writing file: " + e.getMessage());
         }
     }
+
 }
 
