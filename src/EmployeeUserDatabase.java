@@ -18,4 +18,3 @@ public class EmployeeUserDatabase extends Database<EmployeeUser> {
         }
     }
 }
-
