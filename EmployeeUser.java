@@ -1,3 +1,4 @@
+
 public class EmployeeUser implements Record {
     private String employeeId;
     private String name;
@@ -7,11 +8,23 @@ public class EmployeeUser implements Record {
 
     public EmployeeUser(String employeeId, String name, String email, String address, String phoneNumber) {
         if (employeeId == null || employeeId.trim().isEmpty())
-            throw new IllegalArgumentException("Employee ID cannot be empty.");
+        {
+            System.out.println("Invalid ");
+            return;
+        }
+
         if (!isValidEmail(email))
-            throw new IllegalArgumentException("Email must end with '@gmail.com'.");
+        {
+            System.out.println("Invalid");
+            return;
+        }
+
         if (!isValidPhone(phoneNumber))
-            throw new IllegalArgumentException("Phone number must contain only digits and be 10–15 digits.");
+        {
+            System.out.println("Invalid phone number");
+            return;
+        }
+
 
         this.employeeId = employeeId.trim();
         this.name = (name != null) ? name.trim() : "";
@@ -23,10 +36,20 @@ public class EmployeeUser implements Record {
     private boolean isValidEmail(String email) {
         return email != null && email.toLowerCase().endsWith("@gmail.com");
     }
+    public static boolean isValidPhone(String phone) {
+        if (phone == null || phone.isEmpty()) {
+            return false;
+        }
 
-    private boolean isValidPhone(String phone) {
-        return phone != null && phone.matches("\\d{10,15}");
+        for (int i = 0; i < phone.length(); i++) {
+            if (!Character.isDigit(phone.charAt(i))) {
+                return false;
+            }
+        }
+
+        return true;
     }
+
 
     @Override
     public String lineRepresentation() {
