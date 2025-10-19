@@ -11,6 +11,7 @@ public abstract class Database<Type extends Record> {
         this.records = new ArrayList<>();
     }
 
+
     public void readFromFile() {
         records.clear();
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
@@ -24,6 +25,7 @@ public abstract class Database<Type extends Record> {
             System.out.println("Error reading file: " + e.getMessage());
         }
     }
+
 
     protected abstract Type createRecordFrom(String line);
 
@@ -72,6 +74,4 @@ public abstract class Database<Type extends Record> {
             System.out.println("Error writing file: " + e.getMessage());
         }
     }
-
 }
-
