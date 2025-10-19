@@ -28,7 +28,7 @@ public class CustomerProductDatabase extends Database<CustomerProduct> {
             return cp;
 
         } catch (Exception e) {
-            System.out.println(" Skipping invalid line in CustomerProducts.txt");
+            System.out.println(" Skipping invalid line in the CustomerProducts.txt");
             return null;
         }
     }
