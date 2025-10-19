@@ -11,7 +11,6 @@ public abstract class Database<Type extends Record> {
         this.records = new ArrayList<>();
     }
 
-    // 1. Read from file
     public void readFromFile() {
         records.clear();
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
@@ -26,15 +25,14 @@ public abstract class Database<Type extends Record> {
         }
     }
 
-    // 2. Each subclass must implement this
     protected abstract Type createRecordFrom(String line);
 
-    // 3. Return all records
+
     public ArrayList<Type> returnAllRecords() {
         return records;
     }
 
-    // 4. Check if record exists by key
+
     public boolean contains(String key) {
         for (Type record : records) {
             if (record.getSearchKey().equals(key))
@@ -43,7 +41,7 @@ public abstract class Database<Type extends Record> {
         return false;
     }
 
-    // 5. Insert record if unique and valid
+
     public void insertRecord(Type record) {
         if (record == null) return;
         if (contains(record.getSearchKey())) {
@@ -63,7 +61,7 @@ public abstract class Database<Type extends Record> {
         System.out.println("Record with ID " + key + " not found.");
     }
 
-    // 6. Save all records to file
+
     public void saveToFile() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {
             for (Type record : records) {
