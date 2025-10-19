@@ -3,8 +3,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class EmployeeRole {
-    private ProductDatabase pd;
-    private CustomerProductDatabase cpd;
+    private ProductDatabase pd = new ProductDatabase("product.txt");
+    private CustomerProductDatabase cpd = new CustomerProductDatabase("CustomerProducts.txt");
 
     public EmployeeRole(){}
 
@@ -23,7 +23,9 @@ public class EmployeeRole {
     {
         Product p = new Product(productID, productName, manufacturerName, supplierName, quantity,price);
         pd.readFromFile();
-        pd.insertRecord(p);
+        if(p.getSearchKey()!=null) {
+            pd.insertRecord(p);
+        }
         cpd.readFromFile();
         logout();
     }
@@ -110,7 +112,7 @@ public class EmployeeRole {
         }
         if(ChronoUnit.DAYS.between(purchaseDate,returnDate) > 14)
         {
-            System.out.println("14 days have passed cant return product");
+            System.out.println("more than 14 days have passed cant return product");
             return -1;
         }
         cpd.deleteRecord(cp[i].getSearchKey());
@@ -122,7 +124,7 @@ public class EmployeeRole {
                 break;
             }
         }
-        pd.deleteRecord(p[j].getSearchKey());
+        pd.records.remove(j);
         pd.insertRecord(p[j]);
         logout();
         return p[j].getPrice();
@@ -153,7 +155,7 @@ public class EmployeeRole {
             return false;
         }
         cp[i].setPaid(true);
-        cpd.deleteRecord(cp[i].getSearchKey());
+        cpd.records.remove(i);
         cpd.insertRecord(cp[i]);
         logout();
         return true;

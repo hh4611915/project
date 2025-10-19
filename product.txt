@@ -1,3 +1,4 @@
-P2394,Laptop,Apple,TechSupplier,10,1500
-P2400,Mobile,Samsung,Trucker,25,900
-P2450,TV,Sony,Trucker,5,2000
+P2394,Laptop,Apple,TechSupplier,10,1500.0
+P2400,Mobile,Samsung,Trucker,25,900.0
+P2450,TV,Sony,Trucker,5,2000.0
+P350172,Watch,Rolex,SteveCompany,0,999999.0

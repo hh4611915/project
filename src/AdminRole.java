@@ -6,8 +6,11 @@ public class AdminRole {
     public void addEmployee(String employeeId, String name, String email, String address, String phoneNumber){
         database.readFromFile();
         EmployeeUser user = new EmployeeUser(employeeId, name, email,  address, phoneNumber);
-        database.insertRecord(user);
-        logout();
+        if(user.getSearchKey()!=null)
+        {
+            database.insertRecord(user);
+            logout();
+        }
     }
     public EmployeeUser[] getListOfEmployees(){
         database.readFromFile();
