@@ -17,6 +17,10 @@ public class Product implements Record {
         this.quantity = quantity;
         this.price = price;
     }
+    public float getPrice()
+    {
+        return price;
+    }
 
     public int getQuantity() {
         return quantity;
