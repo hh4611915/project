@@ -19,21 +19,8 @@ public class AdminRole {
     }
     public void removeEmployee(String key){
         database.readFromFile();
-        EmployeeUser[] employees = getListOfEmployees();
-        int i;
-        boolean flag = false;
-        for(i = 0; i<employees.length ; i++){
-            if(employees[i].getSearchKey().equals(key)){
-                flag = true;
-                break;
-            }
-        }
-        if(!flag)
-            System.out.println("ID " + key + " was not found!");
-        else{
-        database.records.remove(i);
+        database.deleteRecord(key);
         logout();
-        }
     }
     public void logout(){
         database.saveToFile();
