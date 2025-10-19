@@ -1,30 +1,22 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package lab4;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-/**
- *
- * @author ASUS
- */
-public class CustomerProduct {
-private String customerSSN;
+public class CustomerProduct implements Record {
+
+    private String customerSSN;
     private String productID;
     private LocalDate purchaseDate;
     private boolean paid;
 
-    
     public CustomerProduct(String customerSSN, String productID, LocalDate purchaseDate) {
         this.customerSSN = customerSSN;
         this.productID = productID;
         this.purchaseDate = purchaseDate;
-        this.paid = false; 
+        this.paid = false;
     }
 
-    
     public String getCustomerSSN() {
         return customerSSN;
     }
@@ -37,7 +29,6 @@ private String customerSSN;
         return purchaseDate;
     }
 
-    
     public boolean isPaid() {
         return paid;
     }
@@ -46,16 +37,15 @@ private String customerSSN;
         this.paid = paid;
     }
 
-    
+    @Override
     public String lineRepresentation() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         return customerSSN + "," + productID + "," + purchaseDate.format(formatter) + "," + paid;
     }
 
-    
+    @Override
     public String getSearchKey() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         return customerSSN + "," + productID + "," + purchaseDate.format(formatter);
     }
-}    
-
+}

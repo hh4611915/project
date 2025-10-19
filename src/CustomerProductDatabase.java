@@ -1,120 +1,35 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package lab4;
 
-/**
- *
- * @author ASUS
- */
 import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 
-public class CustomerProductDatabase {
+public class CustomerProductDatabase extends Database<CustomerProduct> {
 
-    private ArrayList<CustomerProduct> records;
-    private String filename;
-
-    
     public CustomerProductDatabase(String filename) {
-        this.filename = filename;
-        this.records = new ArrayList<>();
+        super(filename);
     }
 
-    public void readFromFile() throws IOException {
-        records.clear();
-        BufferedReader br = new BufferedReader(new FileReader(filename));
-        String line;
+    @Override
+    protected CustomerProduct createRecordFrom(String line) {
+        try {
+            String[] data = line.split(",");
+            if (data.length != 4) return null;
 
-        while ((line = br.readLine()) != null) {
-            CustomerProduct cp = createRecordFrom(line);
-            if (cp != null) {
-                records.add(cp);
-            }
-        }
+            String customerSSN = data[0];
+            String productID = data[1];
 
-        br.close();
-    }
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            LocalDate purchaseDate = LocalDate.parse(data[2], formatter);
+            boolean paid = Boolean.parseBoolean(data[3]);
 
-    public CustomerProduct createRecordFrom(String line) {
-        String[] parts = line.split(",");
-        if (parts.length != 4) {
+            CustomerProduct cp = new CustomerProduct(customerSSN, productID, purchaseDate);
+            cp.setPaid(paid);
+            return cp;
+
+        } catch (Exception e) {
+            System.out.println(" Skipping invalid line in CustomerProducts.txt");
             return null;
         }
-
-        String customerSSN = parts[0];
-        String productID = parts[1];
-        String dateString = parts[2];
-        boolean paid = Boolean.parseBoolean(parts[3]);
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        LocalDate date = LocalDate.parse(dateString, formatter);
-
-        CustomerProduct cp = new CustomerProduct(customerSSN, productID, date);
-        cp.setPaid(paid);
-
-        return cp;
-    }
-
-    public ArrayList<CustomerProduct> returnAllRecords() {
-        return records;
-    }
-
-    public boolean contains(String key) {
-    for (int i = 0; i < records.size(); i++) {
-        CustomerProduct cp = records.get(i);
-        if (cp.getSearchKey().equals(key)) {
-            return true;
-        }
-    }
-    return false;
-}
-
-
-   public CustomerProduct getRecord(String key) {
-    for (int i = 0; i < records.size(); i++) {
-        CustomerProduct cp = records.get(i);
-        if (cp.getSearchKey().equals(key)) {
-            return cp;
-        }
-    }
-    return null;
-}
-
-
-    public void insertRecord(CustomerProduct record) {
-        if (!contains(record.getSearchKey())) {
-            records.add(record);
-        }
-    }
-
-   public void deleteRecord(String key) {
-    CustomerProduct toDelete = null;
-    for (int i = 0; i < records.size(); i++) {
-        CustomerProduct cp = records.get(i);
-        if (cp.getSearchKey().equals(key)) {
-            toDelete = cp;
-            break;
-        }
-    }
-    if (toDelete != null) {
-        records.remove(toDelete);
     }
 }
-
-
-    public void saveToFile() throws IOException {
-    BufferedWriter bw = new BufferedWriter(new FileWriter(filename));
-    for (int i = 0; i < records.size(); i++) {
-        CustomerProduct cp = records.get(i);
-        bw.write(cp.lineRepresentation());
-        bw.newLine();
-    }
-    bw.close();
-}
-
-}
-
