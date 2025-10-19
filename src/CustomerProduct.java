@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package lab4;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -10,8 +9,8 @@ import java.time.format.DateTimeFormatter;
  *
  * @author ASUS
  */
-public class CustomerProduct {
-private String customerSSN;
+public class CustomerProduct implements Record {
+    private String customerSSN;
     private String productID;
     private LocalDate purchaseDate;
     private boolean paid;
@@ -47,7 +46,7 @@ private String customerSSN;
     }
 
     
-    public String lineRepresentation() {
+    public String lineRepresentation(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         return customerSSN + "," + productID + "," + purchaseDate.format(formatter) + "," + paid;
     }
